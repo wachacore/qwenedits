@@ -12,7 +12,7 @@
             --neon-purple: #b026ff;
             --neon-red: #ff003c;
             --text-white: #ffffff;
-            --glow-strength: 0px 0px 10px;
+            --menu-bg: rgba(20, 20, 20, 0.98);
         }
 
         * {
@@ -53,6 +53,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-red);
+            cursor: pointer;
         }
 
         .burger-btn {
@@ -63,6 +64,7 @@
             flex-direction: column;
             gap: 5px;
             padding: 5px;
+            z-index: 1001;
         }
 
         .bar {
@@ -74,7 +76,7 @@
             box-shadow: 0 0 5px var(--neon-purple);
         }
 
-        /* Анимация бургера при открытии */
+        /* Анимация бургера */
         .burger-btn.active .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); background-color: var(--neon-red); }
         .burger-btn.active .bar:nth-child(2) { opacity: 0; }
         .burger-btn.active .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); background-color: var(--neon-red); }
@@ -84,14 +86,17 @@
             position: fixed;
             top: 70px;
             right: -100%;
-            width: 250px;
-            background: rgba(20, 20, 20, 0.95);
+            width: 280px; /* Чуть шире для языков */
+            background: var(--menu-bg);
             border: 1px solid var(--neon-purple);
             border-radius: 10px;
             padding: 20px;
             transition: 0.4s ease;
             box-shadow: 0 0 20px rgba(176, 38, 255, 0.3);
             z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .nav-menu.active {
@@ -100,19 +105,58 @@
 
         .nav-item {
             display: block;
-            padding: 15px;
+            padding: 12px;
             color: var(--text-white);
             text-decoration: none;
             font-size: 1.1rem;
             border-bottom: 1px solid #333;
             transition: 0.3s;
             cursor: pointer;
+            text-align: left;
         }
 
         .nav-item:hover {
             color: var(--neon-purple);
             text-shadow: 0 0 8px var(--neon-purple);
-            padding-left: 20px;
+            padding-left: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 5px;
+        }
+
+        /* Стили для выбора языка */
+        .lang-section {
+            margin-top: 15px;
+            border-top: 1px solid var(--neon-red);
+            padding-top: 15px;
+        }
+        
+        .lang-title {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .lang-btn {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            background: transparent;
+            border: 1px solid #444;
+            color: #ccc;
+            cursor: pointer;
+            text-align: left;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .lang-btn:hover, .lang-btn.active-lang {
+            border-color: var(--neon-purple);
+            color: var(--text-white);
+            background: rgba(176, 38, 255, 0.1);
+            box-shadow: 0 0 5px rgba(176, 38, 255, 0.2);
         }
 
         /* --- ОСНОВНОЙ КОНТЕНТ --- */
@@ -171,6 +215,12 @@
             color: var(--neon-red);
             text-shadow: 0 0 10px var(--neon-red);
         }
+        
+        .game-placeholder p {
+            color: #aaa;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
 
         .loader {
             width: 50px;
@@ -195,9 +245,8 @@
             justify-content: center;
         }
 
-        /* КАРТОЧКА ВИДЕО - КОПИРУЙ ЭТОТ БЛОК ДЛЯ НОВОГО ВИДЕО */
         .video-card {
-            flex: 1 1 300px; /* Адаптивность: мин ширина 300px, иначе растягивается */
+            flex: 1 1 300px;
             max-width: 350px;
             background: var(--card-bg);
             border-radius: 15px;
@@ -223,7 +272,6 @@
             overflow: hidden;
         }
 
-        /* Здесь будет картинка превью. Пока стоит заглушка */
         .thumbnail-img {
             width: 100%;
             height: 100%;
@@ -253,9 +301,13 @@
             font-weight: bold;
             text-align: center;
             color: #ddd;
+            min-height: 60px; /* Чтобы карточки были одной высоты */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* --- МОДАЛЬНОЕ ОКНО (ПОЛНОЭКРАННЫЙ ПЛЕЕР) --- */
+        /* --- МОДАЛЬНОЕ ОКНО --- */
         .modal {
             display: none;
             position: fixed;
@@ -307,25 +359,17 @@
             transform: rotate(90deg);
         }
 
-        /* Адаптив для мобильных */
         @media (max-width: 600px) {
-            .video-card {
-                flex: 1 1 100%;
-                max-width: 100%;
-            }
-            .modal-content {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 9/16; /* Вертикальное видео на телефонах, если нужно, или оставь 16/9 */
-            }
+            .video-card { flex: 1 1 100%; max-width: 100%; }
+            .modal-content { width: 100%; height: auto; aspect-ratio: 9/16; }
+            .nav-menu { width: 90%; right: 5%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Хедер -->
     <header>
-        <div class="logo">BOT PROJECT</div>
+        <div class="logo" id="txt_logo">Сайт Qwen'а</div>
         <button class="burger-btn" onclick="toggleMenu()">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -333,82 +377,87 @@
         </button>
     </header>
 
-    <!-- Меню -->
     <nav class="nav-menu" id="navMenu">
-        <a class="nav-item" onclick="showSection('edits')">🎬 Эдиты</a>
-        <a class="nav-item" onclick="showSection('game')">🎮 Игра</a>
+        <!-- Навигация -->
+        <a class="nav-item" onclick="showSection('edits')" id="btn_menu_edits">🎬 Эдиты</a>
+        <a class="nav-item" onclick="showSection('game')" id="btn_menu_game">🎮 Игра</a>
+
+        <!-- Выбор языка -->
+        <div class="lang-section">
+            <div class="lang-title" id="txt_lang_title">Язык / Language / Idioma</div>
+            <button class="lang-btn active-lang" onclick="setLanguage('ru')">Русский</button>
+            <button class="lang-btn" onclick="setLanguage('en')">English</button>
+            <button class="lang-btn" onclick="setLanguage('es')">Español</button>
+        </div>
     </nav>
 
     <main>
         <!-- Раздел ЭДИТЫ -->
         <section id="edits" class="section active">
-            <h1>Галерея Эдитов</h1>
+            <h1 id="txt_edits_title">Галерея Эдитов</h1>
             <div class="gallery-grid">
 
-                <!-- === ШАБЛОН ДЛЯ ВИДЕО 1 === -->
-                <!-- Скопируй весь блок div class="video-card" чтобы добавить новое -->
-                <div class="video-card" onclick="openVideo('video1.mp4', 'Эпит номер 1')">
+                <!-- Видео 1 -->
+                <div class="video-card" onclick="openVideo('video1.mp4')">
                     <div class="thumbnail-container">
-                        <!-- Замени src на путь к картинке превью, если есть. Пока стоит цветной фон -->
                         <img src="https://via.placeholder.com/400x250/2a0a3a/ffffff?text=Edit+1" alt="Preview" class="thumbnail-img">
                         <div class="play-icon">▶</div>
                     </div>
-                    <div class="video-title">Эдит №1</div>
+                    <div class="video-title" id="txt_edit_1">Эдит #1</div>
                 </div>
-                <!-- Конец шаблона -->
 
-                <!-- === ШАБЛОН ДЛЯ ВИДЕО 2 === -->
-                <div class="video-card" onclick="openVideo('video2.mp4', 'Крутой момент')">
+                <!-- Видео 2 -->
+                <div class="video-card" onclick="openVideo('video2.mp4')">
                     <div class="thumbnail-container">
                         <img src="https://via.placeholder.com/400x250/3a0a0a/ffffff?text=Edit+2" alt="Preview" class="thumbnail-img">
                         <div class="play-icon">▶</div>
                     </div>
-                    <div class="video-title">Эдит №2</div>
+                    <div class="video-title" id="txt_edit_2">Эдит #2</div>
                 </div>
 
-                <!-- === ШАБЛОН ДЛЯ ВИДЕО 3 === -->
-                <div class="video-card" onclick="openVideo('video3.mp4', 'Нарезка 2024')">
+                <!-- Видео 3 -->
+                <div class="video-card" onclick="openVideo('video3.mp4')">
                     <div class="thumbnail-container">
                         <img src="https://via.placeholder.com/400x250/000000/ffffff?text=Edit+3" alt="Preview" class="thumbnail-img">
                         <div class="play-icon">▶</div>
                     </div>
-                    <div class="video-title">Эдит №3</div>
+                    <div class="video-title" id="txt_edit_3">Эдит #3</div>
                 </div>
 
-                <!-- === ШАБЛОН ДЛЯ ВИДЕО 4 === -->
-                <div class="video-card" onclick="openVideo('video4.mp4', 'Стиль Неон')">
+                <!-- Видео 4 -->
+                <div class="video-card" onclick="openVideo('video4.mp4')">
                     <div class="thumbnail-container">
                         <img src="https://via.placeholder.com/400x250/2a0a3a/ffffff?text=Edit+4" alt="Preview" class="thumbnail-img">
                         <div class="play-icon">▶</div>
                     </div>
-                    <div class="video-title">Эдит №4</div>
+                    <div class="video-title" id="txt_edit_4">Эдит #4</div>
                 </div>
 
-                <!-- === ШАБЛОН ДЛЯ ВИДЕО 5 === -->
-                <div class="video-card" onclick="openVideo('video5.mp4', 'Геймплей монтаж')">
+                <!-- Видео 5 -->
+                <div class="video-card" onclick="openVideo('video5.mp4')">
                     <div class="thumbnail-container">
                         <img src="https://via.placeholder.com/400x250/3a0a0a/ffffff?text=Edit+5" alt="Preview" class="thumbnail-img">
                         <div class="play-icon">▶</div>
                     </div>
-                    <div class="video-title">Эдит №5</div>
+                    <div class="video-title" id="txt_edit_5">Эдит #5</div>
                 </div>
 
-                <!-- === ШАБЛОН ДЛЯ ВИДЕО 6 === -->
-                <div class="video-card" onclick="openVideo('video6.mp4', 'Тест цветов')">
+                <!-- Видео 6 -->
+                <div class="video-card" onclick="openVideo('video6.mp4')">
                     <div class="thumbnail-container">
                         <img src="https://via.placeholder.com/400x250/000000/ffffff?text=Edit+6" alt="Preview" class="thumbnail-img">
                         <div class="play-icon">▶</div>
                     </div>
-                    <div class="video-title">Эдит №6</div>
+                    <div class="video-title" id="txt_edit_6">Эдит #6</div>
                 </div>
 
-                <!-- === ШАБЛОН ДЛЯ ВИДЕО 7 === -->
-                <div class="video-card" onclick="openVideo('video7.mp4', 'Финал')">
+                <!-- Видео 7 -->
+                <div class="video-card" onclick="openVideo('video7.mp4')">
                     <div class="thumbnail-container">
                         <img src="https://via.placeholder.com/400x250/2a0a3a/ffffff?text=Edit+7" alt="Preview" class="thumbnail-img">
                         <div class="play-icon">▶</div>
                     </div>
-                    <div class="video-title">Эдит №7</div>
+                    <div class="video-title" id="txt_edit_7">Эдит #7</div>
                 </div>
 
             </div>
@@ -416,16 +465,16 @@
 
         <!-- Раздел ИГРА -->
         <section id="game" class="section">
-            <h1>Игра</h1>
+            <h1 id="txt_game_title">Игра</h1>
             <div class="game-placeholder">
-                <h2>В РАЗРАБОТКЕ</h2>
-                <p style="color: #aaa; margin-top: 10px;">Скоро здесь появится эпичная игра!</p>
+                <h2 id="txt_game_status">В РАЗРАБОТКЕ</h2>
+                <p id="txt_game_desc">Скоро здесь появится эпичная игра!</p>
                 <div class="loader"></div>
             </div>
         </section>
     </main>
 
-    <!-- Модальное окно для видео -->
+    <!-- Модальное окно -->
     <div id="videoModal" class="modal" onclick="closeVideo(event)">
         <div class="modal-content">
             <span class="close-btn" onclick="forceCloseVideo()">&times;</span>
@@ -437,6 +486,63 @@
     </div>
 
     <script>
+        // --- СЛОВАРЬ ПЕРЕВОДОВ ---
+        const translations = {
+            ru: {
+                logo: "Сайт Qwen'а",
+                menu_edits: "🎬 Эдиты",
+                menu_game: "🎮 Игра",
+                lang_title: "Язык / Language",
+                edits_title: "Галерея Эдитов",
+                game_title: "Игра",
+                game_status: "В РАЗРАБОТКЕ",
+                game_desc: "Скоро здесь появится эпичная игра!",
+                edit_1: "Эдит #1",
+                edit_2: "Эдит #2",
+                edit_3: "Эдит #3",
+                edit_4: "Эдит #4",
+                edit_5: "Эдит #5",
+                edit_6: "Эдит #6",
+                edit_7: "Эдит #7"
+            },
+            en: {
+                logo: "Qwen's Page",
+                menu_edits: "🎬 Edits",
+                menu_game: "🎮 Game",
+                lang_title: "Language / Idioma",
+                edits_title: "Edits Gallery",
+                game_title: "Game",
+                game_status: "IN DEVELOPMENT",
+                game_desc: "Epic game coming soon!",
+                edit_1: "Edit #1",
+                edit_2: "Edit #2",
+                edit_3: "Edit #3",
+                edit_4: "Edit #4",
+                edit_5: "Edit #5",
+                edit_6: "Edit #6",
+                edit_7: "Edit #7"
+            },
+            es: {
+                logo: "Qwen's Page",
+                menu_edits: "🎬 Edits",
+                menu_game: "🎮 Juego",
+                lang_title: "Idioma / Language",
+                edits_title: "Galería de Edits",
+                game_title: "Juego",
+                game_status: "EN DESARROLLO",
+                game_desc: "¡Próximamente un juego épico!",
+                edit_1: "Edit #1",
+                edit_2: "Edit #2",
+                edit_3: "Edit #3",
+                edit_4: "Edit #4",
+                edit_5: "Edit #5",
+                edit_6: "Edit #6",
+                edit_7: "Edit #7"
+            }
+        };
+
+        let currentLang = 'ru';
+
         // --- ЛОГИКА МЕНЮ ---
         function toggleMenu() {
             const menu = document.getElementById('navMenu');
@@ -446,30 +552,57 @@
         }
 
         function showSection(sectionId) {
-            // Скрываем все секции
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            // Показываем нужную
             document.getElementById(sectionId).classList.add('active');
-            // Закрываем меню на мобильном
             document.getElementById('navMenu').classList.remove('active');
             document.querySelector('.burger-btn').classList.remove('active');
+        }
+
+        // --- ЛОГИКА ЛОКАЛИЗАЦИИ ---
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            // Обновляем тексты по ID
+            document.getElementById('txt_logo').textContent = t.logo;
+            document.getElementById('btn_menu_edits').textContent = t.menu_edits;
+            document.getElementById('btn_menu_game').textContent = t.menu_game;
+            document.getElementById('txt_lang_title').textContent = t.lang_title;
+            
+            document.getElementById('txt_edits_title').textContent = t.edits_title;
+            document.getElementById('txt_game_title').textContent = t.game_title;
+            document.getElementById('txt_game_status').textContent = t.game_status;
+            document.getElementById('txt_game_desc').textContent = t.game_desc;
+
+            // Обновляем названия видео
+            document.getElementById('txt_edit_1').textContent = t.edit_1;
+            document.getElementById('txt_edit_2').textContent = t.edit_2;
+            document.getElementById('txt_edit_3').textContent = t.edit_3;
+            document.getElementById('txt_edit_4').textContent = t.edit_4;
+            document.getElementById('txt_edit_5').textContent = t.edit_5;
+            document.getElementById('txt_edit_6').textContent = t.edit_6;
+            document.getElementById('txt_edit_7').textContent = t.edit_7;
+
+            // Обновляем подсветку кнопок языка
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active-lang'));
+            // Находим кнопку, на которую нажали (через event сложнее, проще по индексу или тексту, но сделаем проще)
+            const buttons = document.querySelectorAll('.lang-btn');
+            if(lang === 'ru') buttons[0].classList.add('active-lang');
+            if(lang === 'en') buttons[1].classList.add('active-lang');
+            if(lang === 'es') buttons[2].classList.add('active-lang');
         }
 
         // --- ЛОГИКА ВИДЕО ---
         const modal = document.getElementById('videoModal');
         const player = document.getElementById('mainPlayer');
 
-        function openVideo(videoPath, title) {
-            // Устанавливаем источник видео
+        function openVideo(videoPath) {
             player.src = videoPath;
-            // Запускаем воспроизведение
             player.play();
-            // Показываем модальное окно
             modal.style.display = 'flex';
         }
 
         function closeVideo(event) {
-            // Закрываем только если клик был по темному фону, а не по самому видео
             if (event.target === modal) {
                 forceCloseVideo();
             }
@@ -478,10 +611,9 @@
         function forceCloseVideo() {
             modal.style.display = 'none';
             player.pause();
-            player.src = ""; // Сбрасываем источник, чтобы видео остановилось полностью
+            player.src = "";
         }
 
-        // Закрытие по клавише Esc
         document.addEventListener('keydown', function(event) {
             if (event.key === "Escape") {
                 forceCloseVideo();
